@@ -7,7 +7,6 @@ namespace fs = std::filesystem;
 
 void fix_name(const fs::directory_entry entry, bool no_plusses_in_output)
 {
-
 	if (!entry.is_regular_file()) {
 		return;
 	}
@@ -44,7 +43,6 @@ void fix_name(const fs::directory_entry entry, bool no_plusses_in_output)
 	fs::rename(entry.path().c_str(), after.c_str());
 
 	cout << entry.path() << "  ->  " << after << endl;
-
 }
 
 int main(int argc, char** argv)
