@@ -1,8 +1,5 @@
-﻿// fixname.cpp : Defines the entry point for the application.
-//
-
-#include "fixname.h"
-#include <filesystem>
+﻿#include <filesystem>
+#include <iostream>
 #include <regex>
 
 using namespace std;
@@ -20,14 +17,22 @@ void fix_name(const fs::directory_entry entry)
 		return;
 	}
 
-	regex needle("([+]| [ ]+)");
+	// Replace plusses with spaces.
+	regex needle("([+])");
 	string output = regex_replace(prev_filename.c_str(), needle, " ");
-	regex triple("   ");
-	output = regex_replace(output.c_str(), triple, " + ");
+
+	// Replace double spaces with ' +' as we assume in these cases that the plus was intended to be there.
+	regex double_space("  ");
+	output = regex_replace(output.c_str(), double_space, " +");
+
+	// Trim whitespace from beginning and end of name
 	output.erase(0, output.find_first_not_of(' '));
 	output = output.substr(0, output.find_last_not_of(' ') + 1);
+
+	// Re-form full path
 	const string ext = entry.path().filename().extension().string();
 	const fs::path after = entry.path().parent_path().append(output + ext);
+
 	fs::rename(entry.path().c_str(), after.c_str());
 	cout << entry.path() << "  ->  " << after << endl;
 }
