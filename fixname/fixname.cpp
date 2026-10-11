@@ -11,9 +11,11 @@ void fix_name(const fs::directory_entry entry, bool no_plusses_in_output)
 		return;
 	}
 	try {
+		// This step crashses if the path contains a character not natively supported
+		// by C++ (and/or because the user's locale doesn't support them natively).
 		const string prev_filename = entry.path().filename().stem().string();
 		// If no plusses or spaces in the name, skip the file.
-	if (prev_filename.find_first_of("+", 0) == string::npos || prev_filename.find_first_of(" ", 0) != string::npos) {
+		if (prev_filename.find_first_of("+", 0) == string::npos || prev_filename.find_first_of(" ", 0) != string::npos) {
 			return;
 		}
 
