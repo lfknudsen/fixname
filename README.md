@@ -35,3 +35,10 @@ With `-n`:
 `Salt+++Pepper.mkv` becomes `Salt Pepper.mkv`.
 
 `Remember+Google++.dat` becomes `Remember Google.dat`
+
+## Issues
+
+Note that it does not support characters that cannot fit inside one byte, e.g.
+Japanese symbols.
+
+Such files will be skipped with a message explaining as such.
